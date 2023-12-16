@@ -1,21 +1,28 @@
 import React, { useCallback, useState } from 'react'
 import { Button, Field, GU, Info, TextInput, textStyle } from '@aragon/ui'
 import { useMultiModal } from '@/components/MultiModal/MultiModalProvider'
-import RequiredTokensError from '@/components/RequiredTokensInfo'
-import { useFee } from '@/providers/Fee'
-import { TermsOfUseDisclaimer } from '@/components/Disclaimers'
+import RequiredTokensInfo from '@/components/RequiredTokensInfo'
+import { CovenantDisclaimer } from '@/components/Disclaimers'
 import { URL_REGEX } from '@/utils/text-utils'
 import { buildContext } from '@/utils/evmscript'
 import { ValidationError } from '@/components/ValidationError'
+import { useRequiredFeesForAction } from '@/hooks/shared/useRequiredFeesForAction'
 
 function CreateNewVote({ getTransactions }) {
-  const { hasFeeTokens } = useFee()
+  const [
+    { feeForwarder, tokenBalance, enoughFeeTokenBalance },
+    { loading: requiredFeesLoading },
+  ] = useRequiredFeesForAction({
+    role: 'CREATE_VOTES_ROLE',
+  })
   const [title, setTitle] = useState('')
   const [reference, setReference] = useState('')
   const [errorMessage, setErrorMessage] = useState()
   const { next } = useMultiModal()
   const disableButton =
-    !title.length || !hasFeeTokens || !URL_REGEX.test(reference)
+    !title.length ||
+    (!requiredFeesLoading && !enoughFeeTokenBalance) ||
+    !URL_REGEX.test(reference)
 
   const handleTitleChange = useCallback(event => {
     const updatedTitle = event.target.value
@@ -95,7 +102,7 @@ function CreateNewVote({ getTransactions }) {
         any direct repercussions on the organization.
       </Info>
 
-      <TermsOfUseDisclaimer>
+      <CovenantDisclaimer>
         <Button
           mode="strong"
           wide
@@ -107,12 +114,18 @@ function CreateNewVote({ getTransactions }) {
         >
           Create new Proposal
         </Button>
-      </TermsOfUseDisclaimer>
-      <RequiredTokensError
-        css={`
-          margin-top: ${2 * GU}px;
-        `}
-      />
+      </CovenantDisclaimer>
+
+      {feeForwarder && tokenBalance && (
+        <RequiredTokensInfo
+          css={`
+            margin-top: ${2 * GU}px;
+          `}
+          feeForwarder={feeForwarder}
+          tokenBalance={tokenBalance}
+        />
+      )}
+
       {errorMessage && <ValidationError message={errorMessage} />}
     </div>
   )

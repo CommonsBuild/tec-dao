@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { GU, tokenIconUrl } from '@aragon/ui'
-import { useNetwork } from '@/hooks/shared'
+import { GU } from '@aragon/ui'
 import LocalIdentityBadge from '@/components/LocalIdentityBadge/LocalIdentityBadge'
 import { ETHER_TOKEN_FAKE_ADDRESS } from '../lib/token-utils'
 import { addressesEqual } from '@/utils/web3-utils'
@@ -10,9 +9,9 @@ const TokenSelectorInstance = React.memo(function TokenSelectorInstance({
   address,
   name,
   symbol,
-  showIcon = true,
+  logoUrl,
+  showAddress = true,
 }) {
-  const network = useNetwork()
   return (
     <div
       css={`
@@ -20,12 +19,12 @@ const TokenSelectorInstance = React.memo(function TokenSelectorInstance({
         align-items: center;
       `}
     >
-      {showIcon ? (
-        <Icon src={tokenIconUrl(address, symbol, network?.type)} />
+      {logoUrl ? (
+        <Icon src={logoUrl} />
       ) : (
         <div
           css={`
-            width: ${3 * GU}px;
+            width: ${showAddress ? 3 * GU : 0}px;
           `}
         />
       )}
@@ -33,6 +32,10 @@ const TokenSelectorInstance = React.memo(function TokenSelectorInstance({
         <span
           css={`
             margin-right: ${1 * GU}px;
+            max-width: ${15 * GU}px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
           `}
         >
           {symbol}
@@ -50,9 +53,9 @@ const TokenSelectorInstance = React.memo(function TokenSelectorInstance({
           ({name})
         </span>
       )}
-      {!addressesEqual(address, ETHER_TOKEN_FAKE_ADDRESS) && (
-        <LocalIdentityBadge badgeOnly compact entity={address} />
-      )}
+      {Boolean(
+        !addressesEqual(address, ETHER_TOKEN_FAKE_ADDRESS) && showAddress
+      ) && <LocalIdentityBadge badgeOnly compact entity={address} />}
     </div>
   )
 })

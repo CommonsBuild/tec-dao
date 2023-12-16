@@ -1,5 +1,4 @@
 import React, { useLayoutEffect, useState } from 'react'
-import styled from 'styled-components'
 import {
   DropDown,
   IconCross,
@@ -13,11 +12,11 @@ import {
   Button,
 } from '@aragon/ui'
 import { fromDecimals, toDecimals } from '@/utils/math-utils'
-import AmountInput from '../../../../components/AmountInput'
+import AmountInput from '@/components/AmountInput'
 import { useMultiModal } from '@/components/MultiModal/MultiModalProvider'
-import RequiredTokensError from '@/components/RequiredTokensInfo'
-import { useFee } from '@/providers/Fee'
-import { FinancialComplianceFormDisclaimer } from '@/components/Disclaimers'
+import RequiredTokensInfo from '@/components/RequiredTokensInfo'
+import { useRequiredFeesForAction } from '@/hooks/shared/useRequiredFeesForAction'
+import TokenSelectorInstance from '../TokenSelectorInstance'
 
 const NO_ERROR = Symbol('NO_ERROR')
 const RECEIPIENT_NOT_ADDRESS_ERROR = Symbol('RECEIPIENT_NOT_ADDRESS_ERROR')
@@ -139,11 +138,19 @@ class Withdrawal extends React.Component {
   }
 
   render() {
-    const { title, hasFeeTokens } = this.props
+    const { title, feeData } = this.props
+    const { feeForwarder, tokenBalance, enoughFeeTokenBalance } = feeData
     const { amount, recipient, reference, selectedToken } = this.state
 
     const tokens = this.nonZeroTokens()
-    const symbols = tokens.map(({ symbol }) => symbol)
+    const tokenInstances = tokens.map(({ address, name, symbol, logoUrl }) => (
+      <TokenSelectorInstance
+        address={address}
+        name={name}
+        logoUrl={logoUrl}
+        symbol={symbol}
+      />
+    ))
 
     let errorMessage
     if (recipient.error === RECEIPIENT_NOT_ADDRESS_ERROR) {
@@ -159,7 +166,7 @@ class Withdrawal extends React.Component {
         !recipient.value ||
         !amount.value ||
         selectedToken === NULL_SELECTED_TOKEN ||
-        !hasFeeTokens
+        !enoughFeeTokenBalance
     )
 
     const isVisibleMaxButton = Boolean(selectedToken !== NULL_SELECTED_TOKEN)
@@ -178,28 +185,25 @@ class Withdrawal extends React.Component {
             onChange={this.handleRecipientUpdate}
           />
         </Field>
+        <Field label="Token" required>
+          <DropDown
+            header="Token"
+            placeholder="Token"
+            items={tokenInstances}
+            selected={selectedToken}
+            onChange={this.handleSelectToken}
+            wide
+          />
+        </Field>
         <Field label="Amount" required>
-          <CombinedInput>
-            <AmountInput
-              onChange={this.handleAmountUpdate}
-              onMaxClick={this.setMaxUserBalance}
-              showMax={isVisibleMaxButton}
-              value={amount.value}
-              required
-              wide
-            />
-
-            <DropDown
-              header="Token"
-              placeholder="Token"
-              items={symbols}
-              selected={selectedToken}
-              onChange={this.handleSelectToken}
-              css={`
-                margin-left: ${1.5 * GU}px;
-              `}
-            />
-          </CombinedInput>
+          <AmountInput
+            onChange={this.handleAmountUpdate}
+            onMaxClick={this.setMaxUserBalance}
+            showMax={isVisibleMaxButton}
+            value={amount.value}
+            required
+            wide
+          />
         </Field>
         <Field label="Reference (optional)">
           <TextInput
@@ -208,20 +212,18 @@ class Withdrawal extends React.Component {
             wide
           />
         </Field>
-        <FinancialComplianceFormDisclaimer
-          css={`
-            margin: ${2 * GU}px 0;
-          `}
-        >
-          <Button disabled={disabled} mode="strong" type="submit" wide>
-            Submit withdrawal
-          </Button>
-        </FinancialComplianceFormDisclaimer>
-        <RequiredTokensError
-          css={`
-            margin-top: ${2 * GU}px;
-          `}
-        />
+        <Button disabled={disabled} mode="strong" type="submit" wide>
+          Submit withdrawal
+        </Button>
+        {Boolean(feeForwarder && tokenBalance) && (
+          <RequiredTokensInfo
+            feeForwarder={feeForwarder}
+            tokenBalance={tokenBalance}
+            css={`
+              margin-top: ${2 * GU}px;
+            `}
+          />
+        )}
 
         {errorMessage && <ValidationError message={errorMessage} />}
       </form>
@@ -232,10 +234,6 @@ class Withdrawal extends React.Component {
     )
   }
 }
-
-const CombinedInput = styled.div`
-  display: flex;
-`
 
 const ValidationError = ({ message }) => {
   const theme = useTheme()
@@ -266,7 +264,9 @@ const ValidationError = ({ message }) => {
 }
 
 export default props => {
-  const { hasFeeTokens } = useFee()
+  const [feeData] = useRequiredFeesForAction({
+    role: 'CREATE_PAYMENTS_ROLE',
+  })
   const { next } = useMultiModal()
   const [readyToFocus, setReadyToFocus] = useState(false)
 
@@ -278,7 +278,7 @@ export default props => {
     <Withdrawal
       readyToFocus={readyToFocus}
       next={next}
-      hasFeeTokens={hasFeeTokens}
+      feeData={feeData}
       {...props}
     />
   )

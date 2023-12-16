@@ -1,37 +1,10 @@
-import React, { useMemo } from 'react'
-import BN from 'bn.js'
+import React from 'react'
 import { Box, GU, textStyle, useTheme, useViewport } from '@aragon/ui'
 import BalanceToken from './BalanceToken'
-import { getConvertedAmount } from '../lib/conversion-utils'
-import { useConvertRates } from './useConvertRates'
 
-// Prepare the balances for the BalanceToken component
-function useBalanceItems(balances) {
-  const symbols = balances.map(({ symbol }) => symbol)
-
-  const convertRates = useConvertRates(symbols)
-
-  const balanceItems = useMemo(() => {
-    return balances.map(({ address, balance, decimals, symbol }) => {
-      return {
-        address,
-        balance,
-        convertedAmount: convertRates[symbol]
-          ? getConvertedAmount(balance, convertRates[symbol], decimals)
-          : new BN('-1'),
-        decimals,
-        symbol,
-      }
-    })
-  }, [balances, convertRates])
-  return balanceItems
-}
-
-function Balances({ tokenBalances, loading }) {
+function Balances({ tokenBalances }) {
   const theme = useTheme()
   const { below } = useViewport()
-  const balanceItems = useBalanceItems(tokenBalances)
-
   const compact = below('medium')
 
   return (
@@ -51,7 +24,7 @@ function Balances({ tokenBalances, loading }) {
               padding: ${1 * GU}px;
             `}
           >
-            {loading || balanceItems.length === 0 ? (
+            {!tokenBalances?.length ? (
               <div
                 css={`
                   display: flex;
@@ -76,8 +49,15 @@ function Balances({ tokenBalances, loading }) {
                     : ''}
                 `}
               >
-                {balanceItems.map(
-                  ({ address, balance, convertedAmount, decimals, symbol }) => (
+                {tokenBalances.map(
+                  ({
+                    address,
+                    balance,
+                    convertedAmount,
+                    decimals,
+                    symbol,
+                    logoUrl,
+                  }) => (
                     <li
                       key={address}
                       css={`
@@ -99,6 +79,7 @@ function Balances({ tokenBalances, loading }) {
                         convertedAmount={convertedAmount}
                         decimals={decimals}
                         symbol={symbol}
+                        logoUrl={logoUrl}
                       />
                     </li>
                   )

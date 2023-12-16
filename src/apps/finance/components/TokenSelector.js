@@ -30,7 +30,7 @@ class TokenSelector extends React.Component {
     onChange: () => {},
     tokens: [],
     label: 'Token',
-    labelCustomToken: 'Token address or symbol',
+    labelCustomToken: 'Token address',
     selectedIndex: -1,
   }
   state = {
@@ -101,11 +101,11 @@ class TokenSelector extends React.Component {
   }
   getTokenItems() {
     const tokenItems = this.props.tokens.map(
-      ({ address, name, symbol, verified }) => (
+      ({ address, name, symbol, logoUrl }) => (
         <TokenSelectorInstance
           address={address}
           name={name}
-          showIcon={verified}
+          logoUrl={logoUrl}
           symbol={symbol}
         />
       )
@@ -142,7 +142,7 @@ class TokenSelector extends React.Component {
         {showCustomToken && (
           <Field label={labelCustomToken}>
             <TextInput
-              placeholder="SYM…"
+              placeholder="0x…"
               value={customToken.value}
               onChange={this.handleCustomTokenChange}
               required
