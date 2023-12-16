@@ -1,23 +1,18 @@
-# Aragon DAO [<img height="100" align="right" alt="aragon-logo" src="https://user-images.githubusercontent.com/33203511/217436477-b2dae151-5e47-454c-885f-9158793e6790.png">](https://github.com/BlossomLabs/aragon-dao)
+# Commons DAO [<img height="100" align="right" alt="aragon-logo" src="./src/assets/dark/commons-logo-compact.png">](https://github.com/commons-stack/commons-dao)
 
-The web app for the Aragon DAO.
-
-<br/>
-
-![demo](https://user-images.githubusercontent.com/33203511/217442178-e9ac2104-f2a7-40be-aab1-1daa50a05428.gif)
-
+The web app for the TEC DAO.
 
 ## How to run locally
 
 1. Git clone this repo.
 
 ```sh
-git clone https://github.com/BlossomLabs/aragon-dao.git
+git clone https://github.com/commons-stack/commons-dao.git
 ```
 
 2. Go to directory.
 ```sh
-cd aragon-dao/
+cd commons-dao/
 ```
 3. Install dependencies.
 
@@ -54,6 +49,7 @@ And here a list of optional variables:
 | `POCKET_API_KEY`          | The API key for Pokt.network.                                                           |
 | `ANKR_API_KEY`            | The API key for Ankr.com.                                                               |
 | `IPFS_RESOLVER`           | An URL similar to https://gateway.ipfs.io/ipfs/{cid}{path} with a custom IPFS gateway.  |
+| `PORTALS_API_KEY`   | The API key for [portals.fi](http://portals.fi) (used for fetching the token prices and logos).                   |
 | `BUDGET_APP_ADDRESSES`    | A list of comma-separated addresses of DAO apps that should be labeled as "Budget".     |
 | `GOVERNANCE_APP_ADDRESSES`| A list of comma-separated addresses of DAO apps that should be labeled as "Governance". |
 
