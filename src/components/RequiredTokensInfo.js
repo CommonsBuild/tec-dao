@@ -58,6 +58,7 @@ export default function({ feeForwarder, tokenBalance, ...props }) {
               symbol={feeToken.symbol}
               style={{
                 backgroundColor: '#cc830c',
+                opacity: 0.8,
               }}
             />
           </strong>{' '}
