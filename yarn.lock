@@ -1257,10 +1257,10 @@
     "@1hive/connect-types" "^0.9.13"
     graphql-tag "^2.10.3"
 
-"@blossom-labs/connect-finance@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@blossom-labs/connect-finance/-/connect-finance-0.1.1.tgz#2d91c1c5ecad1b1a96c9198b563246dcd000dfbc"
-  integrity sha512-SO8zSH1+6vs1P4eKOpLPMFBaShk9Xph/b+/orNKeaPCReS+vXzoV5Ctfhkunkq2W6DLwNrZOnboBkLDr1fdlTQ==
+"@blossom-labs/connect-finance@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@blossom-labs/connect-finance/-/connect-finance-0.1.2.tgz#0b6eddb03bcd2ba82e2743c436202adc7e4890ff"
+  integrity sha512-+KvfEYxR9r6sRUBaoiBO8kxBzreAftj2WjzR3W9NqO3qHn87591yggZZ58erWSRhu3ybAavVdpNuYZ/IZ7IJQQ==
   dependencies:
     "@1hive/connect-core" "^0.9.13"
     "@1hive/connect-thegraph" "^0.9.13"
