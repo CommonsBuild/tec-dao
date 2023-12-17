@@ -215,7 +215,7 @@ class Withdrawal extends React.Component {
         <Button disabled={disabled} mode="strong" type="submit" wide>
           Submit withdrawal
         </Button>
-        {Boolean(feeForwarder && tokenBalance) && (
+        {feeForwarder && (
           <RequiredTokensInfo
             feeForwarder={feeForwarder}
             tokenBalance={tokenBalance}

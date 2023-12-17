@@ -84,7 +84,7 @@ async function getFeeForwarders(apps, ethers) {
   }, {})
 }
 
-function FeeForwardersProvider({ children, type = '' }) {
+function FeeForwardersProvider({ children }) {
   const { ethers } = useWallet()
   const { apps } = useOrganizationState()
   const [feeForwarders, feeForwardersStatus] = useConnect(

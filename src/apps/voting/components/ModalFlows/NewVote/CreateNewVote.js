@@ -116,7 +116,7 @@ function CreateNewVote({ getTransactions }) {
         </Button>
       </CovenantDisclaimer>
 
-      {feeForwarder && tokenBalance && (
+      {feeForwarder && (
         <RequiredTokensInfo
           css={`
             margin-top: ${2 * GU}px;
