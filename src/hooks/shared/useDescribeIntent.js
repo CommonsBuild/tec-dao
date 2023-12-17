@@ -1,5 +1,5 @@
 import { useFeeForwarders } from '@/providers/FeeForwarders'
-import { addressesEqual } from '@/utils/web3-utils'
+import { addressesEqual, shortenAddress } from '@/utils/web3-utils'
 import { useCallback } from 'react'
 
 const PRE_ACTION_TYPES = {
@@ -24,7 +24,7 @@ function getPreActionDescription(type, tx, { feeTokens } = {}) {
       addressesEqual(feeToken.address, tx.to)
     )
     return `Approve ${feeToken?.symbol ??
-      `Unknown Token (${tx.to})`} fee for required action`
+      `Unknown Token (${shortenAddress(tx.to)})`} fee for required action`
   }
 
   throw new Error(`Unknown pre action type: ${type}`)
