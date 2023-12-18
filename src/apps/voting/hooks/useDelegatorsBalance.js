@@ -5,11 +5,11 @@ import { useConnect } from '@1hive/connect-react'
 export default function useDelegatorsBalance(delegators) {
   const { tokenContract } = useAppState()
   return useConnect(async () => {
-    if (!tokenContract || !delegators) {
+    if (!tokenContract) {
       return
     }
 
-    if (!delegators.length) {
+    if (!delegators?.length) {
       return []
     }
 
