@@ -10,7 +10,7 @@ The web app for the Token Engineering Commons (TEC) DAO.
 1. Git clone this repo.
 
 ```sh
-git clone https://github.com/commons-stack/commons-dao.git
+git clone https://github.com/CommonsBuild/tec-dao.git
 ```
 
 2. Go to directory.
