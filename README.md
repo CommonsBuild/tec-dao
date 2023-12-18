@@ -1,6 +1,9 @@
 # Commons DAO [<img height="100" align="right" alt="aragon-logo" src="./src/assets/dark/commons-logo-compact.png">](https://github.com/commons-stack/commons-dao)
 
-The web app for the TEC DAO.
+The web app for the Token Engineering Commons (TEC) DAO.
+
+<img width="1724" alt="image" src="https://github.com/commons-stack/commons-dao/assets/33203511/e855d1a8-44ac-4a63-8709-3e993af13dc3">
+
 
 ## How to run locally
 
