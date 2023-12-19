@@ -1,7 +1,7 @@
 {
-  "short_name": "Aragon DAO",
-  "name": "Aragon DAO",
-  "description": "Safe gateway to the Aragon Governance DAO",
+  "short_name": "Commons DAO",
+  "name": "Commons DAO",
+  "description": "Safe gateway to the Token Engineering Commons (TEC) DAO",
   "iconPath": "meta/favicon.png",
   "icons": [
     {
