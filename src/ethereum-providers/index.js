@@ -52,9 +52,9 @@ export const connectors = [
     },
   },
   {
-    id: 'walletconnect',
+    id: 'walletconnectV2',
     properties: {
-      chainId: [CHAIN_ID], // add here to handle more injected chains
+      projectId: env('WALLETCONNECTV2_PROJECTID'),
       rpc: {
         [`${CHAIN_ID}`]: getProviderRPCUrl(),
       },

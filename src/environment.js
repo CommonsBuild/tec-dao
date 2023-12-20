@@ -14,6 +14,7 @@ function throwIfNotExists(envName, envValue) {
   return envValue
 }
 
+
 const ENV_VARS = {
   CHAIN_ID: parseInt(throwIfNotExists('CHAIN_ID', process.env.CHAIN_ID)),
   DAO_ID: throwIfNotExists('DAO_ID', process.env.DAO_ID),
@@ -32,7 +33,7 @@ const ENV_VARS = {
   INFURA_API_KEY: process.env.INFURA_API_KEY || null,
   POCKET_API_KEY: process.env.POCKET_API_KEY || null,
   IPFS_RESOLVER: process.env.IPFS_RESOLVER || null,
-
+  WALLETCONNECTV2_PROJECTID: process.env.WALLETCONNECTV2_PROJECTID || null,
   PORTALS_API_KEY: process.env.PORTALS_API_KEY || null,
 }
 

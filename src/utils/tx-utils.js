@@ -9,7 +9,7 @@ const NETWORK_GAS_DATA = {
     gasFuzzFactor: 1.25,
   },
   10: {
-    blockGasLimit: 30_000_000,
+    blockGasLimit: 30000000,
     gasLimit: DEFAULT_GAS_LIMIT,
     gasFuzzFactor: DEFAULT_GAS_FUZZ_FACTOR,
   },
