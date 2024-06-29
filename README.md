@@ -25,11 +25,19 @@ yarn
 ```
 
 4. Set the environment variables.
-5. Run the development server.
+5. Build the app.
 
 ```sh
-yarn start
+yarn build
 ```
+
+6. Serve the app.
+
+```sh
+npx serve dist
+```
+
+> NOTE: Take into account that the development server is using the hosted service of TheGraph, which is deprecated. On building the app the scripts/postinstall.sh script is used to replace the API key of TheGraph in the built files.
 
 ## Environment variables
 
@@ -42,7 +50,7 @@ Below you can find a list of all the required variables:
 | `CHAIN_ID`                | The ID of the chain where the DAO is located on.                                        |
 | `DAO_ID`                  | The Aragon ID (ENS name) or address of the DAO.                                         |
 | `GUARDIANS_TOKEN_MANAGER` | The address of the Guardian Token Manager app.                                          |
-
+| `THEGRAPH_API_KEY`        | The API key for TheGraph.                                                               |
 
 And here a list of optional variables:
 
