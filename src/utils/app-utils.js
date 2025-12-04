@@ -18,11 +18,30 @@ const KNOWN_ICONS = {
 
 export function getAppPresentationByAddress(apps, appAddress) {
   const app = apps.find(({ address }) => addressesEqual(address, appAddress))
-  return app !== undefined ? getAppPresentation(app) : null
+  if (app) {
+    return getAppPresentation(app)
+  }
+  // Return a default object when app is not found
+  return {
+    humanName: 'External',
+    iconSrc: '',
+    name: 'external',
+    appName: 'external',
+  }
 }
 
 export function getAppPresentation(app) {
-  const { contentUri, name, manifest } = app
+  if (!app) {
+    return {
+      humanName: 'Unknown',
+      iconSrc: '',
+      name: 'unknown',
+      appName: 'unknown',
+    }
+  }
+
+  const { contentUri, name, manifest, appId } = app
+  
   // Get human readable name and icon from manifest if available
   if (manifest) {
     let humanName = manifest.name ?? name
@@ -33,14 +52,21 @@ export function getAppPresentation(app) {
       humanName: APP_CUSTOM_NAME.get(humanName) || humanName,
       iconSrc: iconPath
         ? getIpfsUrlFromUri(contentUri) + iconPath
-        : KNOWN_ICONS[app.appId] ?? '',
+        : KNOWN_ICONS[appId] ?? '',
       name,
       appName: app.name,
       // shortenedName: SHORTENED_APPS_NAMES.get(name) || name,
     }
   }
 
-  return null
+  // Return a default object when manifest is not available
+  const fallbackName = name || 'Unknown'
+  return {
+    humanName: APP_CUSTOM_NAME.get(fallbackName) || fallbackName,
+    iconSrc: KNOWN_ICONS[appId] ?? '',
+    name: fallbackName,
+    appName: app.name || fallbackName,
+  }
 }
 
 export function getAppByName(apps, appName) {
